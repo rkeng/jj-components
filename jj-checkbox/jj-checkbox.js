@@ -62,6 +62,7 @@ class JJCheckbox extends HTMLElement {
     this.onCheckboxClick = this.onCheckboxClick.bind(this);
     this.addClasses = this.addClasses.bind(this);
     this.removeClasses = this.removeClasses.bind(this);
+    this.initAttrVals = this.initAttrVals.bind(this);
     this.classNameSwitch = this.classNameSwitch.bind(this);
   }
 
@@ -75,6 +76,16 @@ class JJCheckbox extends HTMLElement {
   removeClasses(attr) {
     this.checkboxContainer.classList.remove(`is-${attr}`);
     this.checkboxInputSpan.classList.remove(`is-${attr}`);
+  }
+
+  // Helper function for connectedCallback
+  initAttrVals(attr) {
+    if (this.hasAttribute(attr)) {
+      this[attr] = true;
+      this.addClasses(attr);
+    } else {
+      this[attr] = false;
+    }
   }
 
   // Helper function for attributeChangedCallback
@@ -93,30 +104,18 @@ class JJCheckbox extends HTMLElement {
     if (this.hasAttribute('value')) {
       this._value = this.getAttribute('value');
     } else {
-      this._value = "option value";
+      this._value = 'option value';
     }
 
     if (this.hasAttribute('label')) {
       this.label = this.getAttribute('label');
-      this.labelSpan.innerHTML = this.label;
     } else {
-      this.label = "Option";
-      this.labelSpan.innerHTML = this.label;
+      this.label = 'Option';
     }
+    this.labelSpan.innerHTML = this.label;
 
-    if (this.hasAttribute('checked')) {
-      this.checked = true;
-      this.addClasses('checked');
-    } else {
-      this.checked = false;
-    }
-
-    if (this.hasAttribute('disabled')) {
-      this.disabled = true;
-      this.addClasses('disabled');
-    } else {
-      this.disabled = false;
-    }
+    this.initAttrVals('checked');
+    this.initAttrVals('disabled');
   }
 
   onCheckboxClick(event) {
@@ -124,10 +123,10 @@ class JJCheckbox extends HTMLElement {
       this.checked = !this.checked;
       console.log(this.checked ? "Checked " + this._value : "Unchecked " + this._value);
       if (this.checked) {
-        this.setAttribute("checked", "");
+        this.setAttribute('checked', '');
         this.addClasses('checked');
       } else {
-        this.removeAttribute("checked");
+        this.removeAttribute('checked');
         this.removeClasses('checked');
       }
     }
@@ -164,14 +163,14 @@ class JJCheckbox extends HTMLElement {
   set label(newValue) { this.setAttribute('label', newValue); }
   set checked(newValue) {
     if (newValue) {
-      this.setAttribute('checked', "");
+      this.setAttribute('checked', '');
     } else {
       this.removeAttribute('checked');
     }
   }
   set disabled(newValue) {
     if (newValue) {
-      this.setAttribute('disabled', "");
+      this.setAttribute('disabled', '');
     } else {
       this.removeAttribute('disabled');
     }
