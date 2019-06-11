@@ -90,7 +90,6 @@ class JJSlider extends HTMLElement {
     this.setPosition = this.setPosition.bind(this);
     this.setTooltipPosition = this.setTooltipPosition.bind(this);
     this.onSliderClick = this.onSliderClick.bind(this);
-    this.onButtonHover = this.onButtonHover.bind(this);
     this.onButtonHoverEnd = this.onButtonHoverEnd.bind(this);
     this.onButtonDown = this.onButtonDown.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
@@ -101,7 +100,7 @@ class JJSlider extends HTMLElement {
   connectedCallback() {
     // Bind event listener to slider elements
     this.sliderRunway.addEventListener('mousedown', this.onSliderClick);
-    this.sliderBtnWrapper.addEventListener('mouseover', this.onButtonHover);
+    this.sliderBtnWrapper.addEventListener('mouseover', this.setTooltipPosition);
     this.sliderBtnWrapper.addEventListener('mouseout', this.onButtonHoverEnd);
     this.sliderBtnWrapper.addEventListener('mousedown', this.onButtonDown);
 
@@ -171,7 +170,8 @@ class JJSlider extends HTMLElement {
     this.setTooltipPosition();
   }
 
-  // Set tooltip position
+  // Set tooltip position. This function will be called when the slider button 
+  // receives a 'mouseover' signal.
   setTooltipPosition() {
     let rect = this.sliderBtnWrapper.getBoundingClientRect();
     this.tooltip.style =
@@ -187,12 +187,6 @@ class JJSlider extends HTMLElement {
     const sliderOffsetLeft = this.sliderContainer.getBoundingClientRect().left;
     this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize * 100);
     this.onButtonDown(event);
-  }
-
-  // This event handler will be called when the slider button receives a
-  // 'mouseover' signal. Set tooltip position on mouseover.
-  onButtonHover(event) {
-    this.setTooltipPosition();
   }
 
   // This event handler will be called when the slider button receives a
