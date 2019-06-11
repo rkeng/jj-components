@@ -281,9 +281,10 @@ class JJButton extends HTMLElement {
     this.initPhysProps = this.initPhysProps.bind(this);
     this.initSizeType = this.initSizeType.bind(this);
     this.initNativeAutofocus = this.initNativeAutofocus.bind(this);
+    this.classNameSwitch = this.classNameSwitch.bind(this);
   }
 
-  // helper function for connectedCallback
+  // helper functions for connectedCallback
   initPhysProps(attr) {
     if (this.hasAttribute(attr) && this.getAttribute(attr) == 'true') {
       this[attr] = 'true';
@@ -300,6 +301,15 @@ class JJButton extends HTMLElement {
     let newAttr = attr.replace(/-/g, "_");
     this[newAttr] = this.getAttribute(newAttr);
     this.button.setAttribute(newAttr, this.getAttribute(newAttr));
+  }
+
+  // Helper function for attributeChangedCallback
+  classNameSwitch(attr, value) {
+    if (value == "false") {
+      this.button.classList.remove(attr);
+    } else {
+      this.button.classList.add(attr);
+    }
   }
 
   connectedCallback() {
@@ -353,32 +363,16 @@ class JJButton extends HTMLElement {
         this.button.classList.add(newValue);
         break;
       case 'disabled':
-        if (newValue == "false") {
-          this.button.classList.remove('disabled');
-        } else {
-          this.button.classList.add('disabled');
-        }
+        this.classNameSwitch('disabled', newValue);
         break;
       case 'circle':
-        if (newValue == "false") {
-          this.button.classList.remove('circle');
-        } else {
-          this.button.classList.add('circle');
-        }
+        this.classNameSwitch('circle', newValue);
         break;
       case 'plain':
-        if (newValue == "false") {
-          this.button.classList.remove('plain');
-        } else {
-          this.button.classList.add('plain');
-        }
+        this.classNameSwitch('plain', newValue);
         break;
       case 'round':
-        if (newValue == "false") {
-          this.button.classList.remove('round');
-        } else {
-          this.button.classList.add('round');
-        }
+        this.classNameSwitch('round', newValue);
         break;
       case 'autofocus':
         this.button.setAttribute('autofocus', newValue);
