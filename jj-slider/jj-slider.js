@@ -21,8 +21,8 @@
  * @attribute --slider-width, width of the slider, /, /, /
  */
 
-const template = document.createElement('template');
-template.innerHTML = `
+const jjSliderTemplate = document.createElement('template');
+jjSliderTemplate.innerHTML = `
   <style>
     @import url("https://unpkg.com/element-ui/lib/theme-chalk/slider.css");
 
@@ -73,7 +73,7 @@ class JJSlider extends HTMLElement {
   constructor() {
     super();
     this.root = this.attachShadow({ mode: 'open' });
-    this.root.appendChild(template.content.cloneNode(true));
+    this.root.appendChild(jjSliderTemplate.content.cloneNode(true));
 
     // Target elements with querySelector
     this.sliderContainer = this.root.querySelector('.el-slider');
@@ -88,6 +88,7 @@ class JJSlider extends HTMLElement {
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
     this.setInitPosition = this.setInitPosition.bind(this);
     this.setPosition = this.setPosition.bind(this);
+    this.setTooltipPosition = this.setTooltipPosition.bind(this);
     this.onSliderClick = this.onSliderClick.bind(this);
     this.onButtonHover = this.onButtonHover.bind(this);
     this.onButtonHoverEnd = this.onButtonHoverEnd.bind(this);
@@ -165,9 +166,13 @@ class JJSlider extends HTMLElement {
     this.sliderBar.style.width = newPercent + "%";
     this.sliderBtnWrapper.style.left = newPercent + "%";
 
-    // Set tooltip display value
+    // Set tooltip display value and position
     this.tooltipSpan.innerHTML = Math.round(this._value);
-    // Set tooltip position
+    this.setTooltipPosition();
+  }
+
+  // Set tooltip position
+  setTooltipPosition() {
     let rect = this.sliderBtnWrapper.getBoundingClientRect();
     this.tooltip.style =
       "transform-origin: center bottom; z-index: 2282; position: fixed; top: " +
@@ -187,10 +192,7 @@ class JJSlider extends HTMLElement {
   // This event handler will be called when the slider button receives a
   // 'mouseover' signal. Set tooltip position on mouseover.
   onButtonHover(event) {
-    let rect = this.sliderBtnWrapper.getBoundingClientRect();
-    this.tooltip.style =
-      "transform-origin: center bottom; z-index: 2282; position: fixed; top: " +
-      (rect.top - rect.height) + "px; left: " + rect.left + "px;";
+    this.setTooltipPosition();
   }
 
   // This event handler will be called when the slider button receives a
