@@ -60,6 +60,7 @@ class JJCheckbox extends HTMLElement {
 
     // Bind "this" to functions to reserve context
     this.onCheckboxClick = this.onCheckboxClick.bind(this);
+    this.classNameSwitch = this.classNameSwitch.bind(this);
   }
 
   connectedCallback() {
@@ -114,6 +115,17 @@ class JJCheckbox extends HTMLElement {
     }
   }
 
+  // Helper function to reuse similar blocks of code
+  classNameSwitch(attr, value) {
+    if (value !== null) {
+      this.checkboxContainer.classList.add(`is-${attr}`);
+      this.checkboxInputSpan.classList.add(`is-${attr}`);
+    } else {
+      this.checkboxContainer.classList.remove(`is-${attr}`);
+      this.checkboxInputSpan.classList.remove(`is-${attr}`);
+    }
+  }
+
   // Observe only the array of attribute names
   static get observedAttributes() {
     return ['label', 'checked', 'disabled'];
@@ -126,22 +138,10 @@ class JJCheckbox extends HTMLElement {
         this.labelSpan.innerHTML = newValue;
         break;
       case 'checked':
-        if (newValue !== null) {
-          this.checkboxContainer.classList.add("is-checked");
-          this.checkboxInputSpan.classList.add("is-checked");
-        } else {
-          this.checkboxContainer.classList.remove("is-checked");
-          this.checkboxInputSpan.classList.remove("is-checked");
-        }
+        this.classNameSwitch(name, newValue);
         break;
       case 'disabled':
-        if (newValue !== null) {
-          this.checkboxContainer.classList.add("is-disabled");
-          this.checkboxInputSpan.classList.add("is-disabled");
-        } else {
-          this.checkboxContainer.classList.remove("is-disabled");
-          this.checkboxInputSpan.classList.remove("is-disabled");
-        }
+        this.classNameSwitch(name, newValue);
         break;
     }
   }
