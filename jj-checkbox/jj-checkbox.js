@@ -62,7 +62,8 @@ class JJCheckbox extends HTMLElement {
     this.onCheckboxClick = this.onCheckboxClick.bind(this);
     this.addClasses = this.addClasses.bind(this);
     this.removeClasses = this.removeClasses.bind(this);
-    this.initAttrVals = this.initAttrVals.bind(this);
+    this.initValueLabel = this.initValueLabel.bind(this);
+    this.initCheckedDisabled = this.initCheckedDisabled.bind(this);
     this.classNameSwitch = this.classNameSwitch.bind(this);
   }
 
@@ -78,8 +79,15 @@ class JJCheckbox extends HTMLElement {
     this.checkboxInputSpan.classList.remove(`is-${attr}`);
   }
 
-  // Helper function for connectedCallback
-  initAttrVals(attr) {
+  // Helper functions for connectedCallback
+  initValueLabel(attr) {
+    if (this.hasAttribute(attr)) {
+      this[`_${attr}`] = this.getAttribute(attr);
+    } else {
+      this[`_${attr}`] = 'Option';
+    }
+  }
+  initCheckedDisabled(attr) {
     if (this.hasAttribute(attr)) {
       this[attr] = true;
       this.addClasses(attr);
@@ -100,22 +108,11 @@ class JJCheckbox extends HTMLElement {
   connectedCallback() {
     // Bind event listener to checkbox elements
     this.checkboxContainer.addEventListener('mousedown', this.onCheckboxClick);
-
-    if (this.hasAttribute('value')) {
-      this._value = this.getAttribute('value');
-    } else {
-      this._value = 'option value';
-    }
-
-    if (this.hasAttribute('label')) {
-      this.label = this.getAttribute('label');
-    } else {
-      this.label = 'Option';
-    }
-    this.labelSpan.innerHTML = this.label;
-
-    this.initAttrVals('checked');
-    this.initAttrVals('disabled');
+    this.initValueLabel('value');
+    this.initValueLabel('label');
+    this.labelSpan.innerHTML = this._label;
+    this.initCheckedDisabled('checked');
+    this.initCheckedDisabled('disabled');
   }
 
   onCheckboxClick(event) {
