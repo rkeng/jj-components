@@ -89,8 +89,8 @@ class JJSlider extends HTMLElement {
     this.setInitPosition = this.setInitPosition.bind(this);
     this.setPosition = this.setPosition.bind(this);
     this.setTooltipPosition = this.setTooltipPosition.bind(this);
+    this.hideTooltip = this.hideTooltip.bind(this);
     this.onSliderClick = this.onSliderClick.bind(this);
-    this.onButtonHoverEnd = this.onButtonHoverEnd.bind(this);
     this.onButtonDown = this.onButtonDown.bind(this);
     this.onDragStart = this.onDragStart.bind(this);
     this.onDragging = this.onDragging.bind(this);
@@ -101,7 +101,7 @@ class JJSlider extends HTMLElement {
     // Bind event listener to slider elements
     this.sliderRunway.addEventListener('mousedown', this.onSliderClick);
     this.sliderBtnWrapper.addEventListener('mouseover', this.setTooltipPosition);
-    this.sliderBtnWrapper.addEventListener('mouseout', this.onButtonHoverEnd);
+    this.sliderBtnWrapper.addEventListener('mouseout', this.hideTooltip);
     this.sliderBtnWrapper.addEventListener('mousedown', this.onButtonDown);
 
     // Get attribute values and set default values if not provided
@@ -126,7 +126,7 @@ class JJSlider extends HTMLElement {
     // Set tooltip display value
     this.tooltipSpan.innerHTML = Math.round(this._value);
     // Hide tooltip at initialization
-    this.tooltip.style = "transform-origin: center bottom; z-index: 2282; position: absolute; display: none;";
+    this.hideTooltip();
   }
 
   // Get the percentage value of button's position on slider runway.
@@ -179,6 +179,12 @@ class JJSlider extends HTMLElement {
       (rect.top - rect.height) + "px; left: " + rect.left + "px;";
   }
 
+  // Hide tooltip. This event handler will be called when the slider button
+  // receives a 'mouseout' signal. 
+  hideTooltip() {
+    this.tooltip.style = "transform-origin: center bottom; z-index: 2282; position: fixed; display: none;";
+  }
+
   // This event handler will be called when the slider runway receives a
   // 'mousedown' signal. Set width of slider bar and offset of slider
   // button based on position of cursor on mousedown.
@@ -187,12 +193,6 @@ class JJSlider extends HTMLElement {
     const sliderOffsetLeft = this.sliderContainer.getBoundingClientRect().left;
     this.setPosition((event.clientX - sliderOffsetLeft) / this.sliderSize * 100);
     this.onButtonDown(event);
-  }
-
-  // This event handler will be called when the slider button receives a
-  // 'mouseout' signal. Hide tooltip on mouseout.
-  onButtonHoverEnd(event) {
-    this.tooltip.style = "transform-origin: center bottom; z-index: 2282; position: fixed; display: none;";
   }
 
   // This event handler will be called when the slider button receives a
@@ -247,7 +247,7 @@ class JJSlider extends HTMLElement {
         this.dragging = false;
         if (!this.isClick) {
           this.setPosition(this.newPosition);
-          this.tooltip.style = "transform-origin: center bottom; z-index: 2282; position: fixed; display: none;";
+          this.hideTooltip();
         }
       }, 0);
       window.removeEventListener('mousemove', this.onDragging);
