@@ -116,16 +116,15 @@ class JJCheckbox extends HTMLElement {
   }
 
   onCheckboxClick(event) {
-    if (!this.disabled) {
-      this.checked = !this.checked;
-      console.log(this.checked ? "Checked " + this._value : "Unchecked " + this._value);
-      if (this.checked) {
-        this.setAttribute('checked', '');
-        this.addClasses('checked');
-      } else {
-        this.removeAttribute('checked');
-        this.removeClasses('checked');
-      }
+    if (this.disabled) return;
+    this.checked = !this.checked;
+    console.log(this.checked ? "Checked " + this._value : "Unchecked " + this._value);
+    if (this.checked) {
+      this.setAttribute('checked', '');
+      this.addClasses('checked');
+    } else {
+      this.removeAttribute('checked');
+      this.removeClasses('checked');
     }
   }
 
