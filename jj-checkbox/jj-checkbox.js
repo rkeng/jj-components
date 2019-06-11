@@ -60,7 +60,30 @@ class JJCheckbox extends HTMLElement {
 
     // Bind "this" to functions to reserve context
     this.onCheckboxClick = this.onCheckboxClick.bind(this);
+    this.addClasses = this.addClasses.bind(this);
+    this.removeClasses = this.removeClasses.bind(this);
     this.classNameSwitch = this.classNameSwitch.bind(this);
+  }
+
+  // Helper function to add classes to elements
+  addClasses(attr) {
+    this.checkboxContainer.classList.add(`is-${attr}`);
+    this.checkboxInputSpan.classList.add(`is-${attr}`);
+  }
+
+  // Helper function to remove classes from elements
+  removeClasses(attr) {
+    this.checkboxContainer.classList.remove(`is-${attr}`);
+    this.checkboxInputSpan.classList.remove(`is-${attr}`);
+  }
+
+  // Helper function for attributeChangedCallback
+  classNameSwitch(attr, value) {
+    if (value !== null) {
+      this.addClasses(attr);
+    } else {
+      this.removeClasses(attr);
+    }
   }
 
   connectedCallback() {
@@ -83,16 +106,14 @@ class JJCheckbox extends HTMLElement {
 
     if (this.hasAttribute('checked')) {
       this.checked = true;
-      this.checkboxContainer.classList.add("is-checked");
-      this.checkboxInputSpan.classList.add("is-checked");
+      this.addClasses('checked');
     } else {
       this.checked = false;
     }
 
     if (this.hasAttribute('disabled')) {
       this.disabled = true;
-      this.checkboxContainer.classList.add("is-disabled");
-      this.checkboxInputSpan.classList.add("is-disabled");
+      this.addClasses('disabled');
     } else {
       this.disabled = false;
     }
@@ -101,28 +122,14 @@ class JJCheckbox extends HTMLElement {
   onCheckboxClick(event) {
     if (!this.disabled) {
       this.checked = !this.checked;
-      console.log(this.checked ? "Checked " + this._value
-        : "Unchecked " + this._value);
+      console.log(this.checked ? "Checked " + this._value : "Unchecked " + this._value);
       if (this.checked) {
         this.setAttribute("checked", "");
-        this.checkboxContainer.classList.add("is-checked");
-        this.checkboxInputSpan.classList.add("is-checked");
+        this.addClasses('checked');
       } else {
         this.removeAttribute("checked");
-        this.checkboxContainer.classList.remove("is-checked");
-        this.checkboxInputSpan.classList.remove("is-checked");
+        this.removeClasses('checked');
       }
-    }
-  }
-
-  // Helper function to reuse similar blocks of code
-  classNameSwitch(attr, value) {
-    if (value !== null) {
-      this.checkboxContainer.classList.add(`is-${attr}`);
-      this.checkboxInputSpan.classList.add(`is-${attr}`);
-    } else {
-      this.checkboxContainer.classList.remove(`is-${attr}`);
-      this.checkboxInputSpan.classList.remove(`is-${attr}`);
     }
   }
 
