@@ -276,66 +276,67 @@ class JJButton extends HTMLElement {
 
     //define the elements of this component
     this.button = this.root.querySelector('.btn');
+
+    // Bind "this" to functions to reserve context
+    this.initPhysProps = this.initPhysProps.bind(this);
+    this.initSizeType = this.initSizeType.bind(this);
+    this.initNativeAutofocus = this.initNativeAutofocus.bind(this);
+  }
+
+  // helper function for connectedCallback
+  initPhysProps(attr) {
+    if (this.hasAttribute(attr) && this.getAttribute(attr) == 'true') {
+      this[attr] = 'true';
+      this.button.classList.add(attr);
+    } else {
+      this[attr] = 'false';
+    }
+  }
+  initSizeType(attr) {
+    this[attr] = this.getAttribute(attr);
+    this.button.classList.add(this[attr]);
+  }
+  initNativeAutofocus(attr) {
+    let newAttr = attr.replace(/-/g, "_");
+    this[newAttr] = this.getAttribute(newAttr);
+    this.button.setAttribute(newAttr, this.getAttribute(newAttr));
   }
 
   connectedCallback() {
-    //set the round attribute
-    if (this.hasAttribute('round') && this.getAttribute('round') == 'true') {
-      this.round = 'true';
-      this.button.classList.add('round');
-    } else {
-      this.round = 'false';
-    }
+    // set the round attribute
+    this.initPhysProps('round');
 
-    //set the plain attribute
-    if (this.hasAttribute('plain') && this.getAttribute('plain') == 'true') {
-      this.plain = 'true';
-      this.button.classList.add('plain');
-    } else {
-      this.plain = 'false';
-    }
+    // set the plain attribute
+    this.initPhysProps('plain');
 
-    //set the circle attribute
-    if (this.hasAttribute('circle') && this.getAttribute('circle') == 'true') {
-      this.circle = 'true';
-      this.button.classList.add('circle');
-    } else {
-      this.circle = 'false';
-    }
+    // set the circle attribute
+    this.initPhysProps('circle');
+
+    // set the disabled attribute
+    this.initPhysProps('disabled');
 
     // set the size attribute
     if (this.hasAttribute('size')) {
-      this.size = this.getAttribute('size');
-      this.button.classList.add(this.size);
+      this.initSizeType('size');
     }
 
     // set the type attribute
     if (this.hasAttribute('type')) {
-      this.type = this.getAttribute('type');
-      this.button.classList.add(this.type);
+      this.initSizeType('type');
     } else {
       this.type = "default";
-    }
-    // set the disabled attribute
-    if (this.hasAttribute('disabled') && this.getAttribute('disabled') == 'true') {
-      this.disabled = 'true';
-      this.button.classList.add('disabled');
-    } else {
-      this.disabled = 'false';
     }
 
     // set the native type attribute
     if (this.hasAttribute('native-type')) {
-      this.native_type = this.getAttribute('native-type');
-      this.button.setAttribute('type', this.getAttribute('native-type'));
+      this.initNativeAutofocus('native-type');
     } else {
       this.native_type = 'button';
     }
 
     // set the autofocus attribute
     if (this.hasAttribute('autofocus')) {
-      this.autofocus = this.getAttribute('autofocus');
-      this.button.setAttribute('autofocus', this.getAttribute('autofocus'));
+      this.initNativeAutofocus('autofocus');
     } else {
       this.autofocus = 'false';
     }
