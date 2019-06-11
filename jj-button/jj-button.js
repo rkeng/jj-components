@@ -40,35 +40,28 @@ jjButtonTemplate.innerHTML = `
       font-size: 14px;
       border-radius: 4px;
     }
-    .btn:focus,
-    .btn:hover {
+    .btn:focus, .btn:hover {
       color:#409eff;
       border-color:#c6e2ff;
       background-color:#ecf5ff
     }
-
-    .btn.plain:focus,
-    .btn.plain:hover {
+    .btn.plain:focus, .btn.plain:hover {
       background:#fff;
       border-color:#409eff;
       color:#409eff
     }
-
     .btn.round {
       border-radius:20px;
       padding:12px 23px
     }
-
     .btn.circle {
       border-radius:50%;
       padding:12px
     }
-
     .btn.disabled {
       opacity: 0.4;
       pointer-events: none;
     }
-
     .btn.text {
       border-color:transparent;
       color:#409eff;
@@ -76,8 +69,7 @@ jjButtonTemplate.innerHTML = `
       padding-left:0;
       padding-right:0
     }
-    .btn.text:focus,
-    .btn.text:hover {
+    .btn.text:focus, .btn.text:hover {
       color:#66b1ff;
       border-color:transparent;
       background-color:transparent
@@ -86,7 +78,6 @@ jjButtonTemplate.innerHTML = `
       color:#3a8ee6;
       background-color:transparent
     }
-
     .btn.medium {
       padding:10px 20px;
       font-size:14px;
@@ -139,21 +130,17 @@ jjButtonTemplate.innerHTML = `
       background-color: #409eff;
       border-color: #409eff;
     }
-
-    .primary:focus,
-    .primary:hover {
+    .primary:focus, .primary:hover {
       background:#66b1ff;
       border-color:#66b1ff;
       color:#fff
     }
-
     .primary.plain {
       color:#409eff;
       background:#ecf5ff;
       border-color:#b3d8ff
     }
-    .primary.plain:focus,
-    .primary.plain:hover {
+    .primary.plain:focus, .primary.plain:hover {
       background:#409eff;
       border-color:#409eff;
       color:#fff
@@ -170,21 +157,17 @@ jjButtonTemplate.innerHTML = `
       background-color: #67c23a;
       border-color: #67c23a;
     }
-
-    .success:focus,
-    .success:hover {
+    .success:focus, .success:hover {
       background:#85ce61;
       border-color:#85ce61;
       color:#fff
     }
-
     .success.plain {
       color:#67c23a;
       background:#f0f9eb;
       border-color:#c2e7b0
     }
-    .success.plain:focus,
-    .success.plain:hover {
+    .success.plain:focus, .success.plain:hover {
       background:#67c23a;
       border-color:#67c23a;
       color:#fff
@@ -201,21 +184,17 @@ jjButtonTemplate.innerHTML = `
       background-color: #909399;
       border-color: #909399;
     }
-
-    .info:focus,
-    .info:hover {
+    .info:focus, .info:hover {
       background:#a6a9ad;
       border-color:#a6a9ad;
       color:#fff
     }
-
     .info.plain {
       color:#909399;
       background:#f4f4f5;
       border-color:#d3d4d6
     }
-    .info.plain:focus,
-    .info.plain:hover {
+    .info.plain:focus, .info.plain:hover {
       background:#909399;
       border-color:#909399;
       color:#fff
@@ -232,21 +211,17 @@ jjButtonTemplate.innerHTML = `
       background-color: #e6a23c;
       border-color: #e6a23c;
     }
-
-    .warning:focus,
-    .warning:hover {
+    .warning:focus, .warning:hover {
       background:#ebb563;
       border-color:#ebb563;
       color:#fff
     }
-
     .warning.plain {
       color:#e6a23c;
       background:#fdf6ec;
       border-color:#f5dab1
     }
-    .warning.plain:focus,
-    .warning.plain:hover {
+    .warning.plain:focus, .warning.plain:hover {
       background:#e6a23c;
       border-color:#e6a23c;
       color:#fff
@@ -263,21 +238,17 @@ jjButtonTemplate.innerHTML = `
       background-color: #f56c6c;
       border-color: #f56c6c;
     }
-
-    .danger:focus,
-    .danger:hover {
+    .danger:focus, .danger:hover {
       background:#f78989;
       border-color:#f78989;
       color:#fff
     }
-
     .danger.plain {
       color:#f56c6c;
       background:#fef0f0;
       border-color:#fbc4c4
     }
-    .danger.plain:focus,
-    .danger.plain:hover {
+    .danger.plain:focus, .danger.plain:hover {
       background:#f56c6c;
       border-color:#f56c6c;
       color:#fff
@@ -288,7 +259,6 @@ jjButtonTemplate.innerHTML = `
       color:#fff;
       outline:none
     }
-
   </style>
   <button id="jj-button" class="btn"><slot></slot></button> 
   `;
@@ -306,44 +276,31 @@ class JJButton extends HTMLElement {
 
     //define the elements of this component
     this.button = this.root.querySelector('.btn');
-
   }
 
   connectedCallback() {
     //set the round attribute
-    if (this.hasAttribute('round')) {
-      if (this.getAttribute('round') == 'true') {
-        this.round = "true";
-        this.button.classList.add('round');
-      } else {
-        this.round = "false";
-      }
+    if (this.hasAttribute('round') && this.getAttribute('round') == 'true') {
+      this.round = 'true';
+      this.button.classList.add('round');
     } else {
-      this.round = "false";
+      this.round = 'false';
     }
 
     //set the plain attribute
-    if (this.hasAttribute('plain')) {
-      if (this.getAttribute('plain') == 'true') {
-        this.plain = "true";
-        this.button.classList.add('plain');
-      } else {
-        this.plain = "false";
-      }
+    if (this.hasAttribute('plain') && this.getAttribute('plain') == 'true') {
+      this.plain = 'true';
+      this.button.classList.add('plain');
     } else {
-      this.plain = "false";
+      this.plain = 'false';
     }
 
     //set the circle attribute
-    if (this.hasAttribute('circle')) {
-      if (this.getAttribute('circle') == 'true') {
-        this.button.classList.add('circle');
-        this.circle = "true";
-      } else {
-        this.cicle = "false";
-      }
+    if (this.hasAttribute('circle') && this.getAttribute('circle') == 'true') {
+      this.circle = 'true';
+      this.button.classList.add('circle');
     } else {
-      this.circle = "false";
+      this.circle = 'false';
     }
 
     // set the size attribute
@@ -360,15 +317,11 @@ class JJButton extends HTMLElement {
       this.type = "default";
     }
     // set the disabled attribute
-    if (this.hasAttribute('disabled')) {
-      if (this.getAttribute('disabled') == 'true') {
-        this.disabled = true;
-        this.button.classList.add('disabled')
-      } else {
-        this.disabled = false;
-      }
+    if (this.hasAttribute('disabled') && this.getAttribute('disabled') == 'true') {
+      this.disabled = 'true';
+      this.button.classList.add('disabled');
     } else {
-      this.disabled = false;
+      this.disabled = 'false';
     }
 
     // set the native type attribute
@@ -376,7 +329,7 @@ class JJButton extends HTMLElement {
       this.native_type = this.getAttribute('native-type');
       this.button.setAttribute('type', this.getAttribute('native-type'));
     } else {
-      this.native_type = "button";
+      this.native_type = 'button';
     }
 
     // set the autofocus attribute
@@ -384,7 +337,7 @@ class JJButton extends HTMLElement {
       this.autofocus = this.getAttribute('autofocus');
       this.button.setAttribute('autofocus', this.getAttribute('autofocus'));
     } else {
-      this.autofocus = "false";
+      this.autofocus = 'false';
     }
   }
 
